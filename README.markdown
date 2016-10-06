@@ -1,17 +1,17 @@
-An opinionated way of structure your next Liferay 7.0 Maven project.
+# An opinionated way of structure your next Liferay 7.0 Maven project.
 
-Configs
+## Configs
 
 TODO
 
-Modules
+## Modules
 
 Put your osgi bundles in here.
 
-Themes
+## Themes
 
 TODO
 
-Wars
+## Wars
 
 Put your wars projects here
