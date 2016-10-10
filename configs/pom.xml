@@ -11,8 +11,9 @@
 	</parent>
 	<artifactId>liferay-maven-workspace-configs</artifactId>
 	<name>Liferay Maven Workspace Configs</name>
+    <packaging>pom</packaging>
 
     <modules>
     </modules>
-    
+
 </project>

@@ -11,6 +11,7 @@
 	</parent>
 	<artifactId>liferay-maven-workspace-wars</artifactId>
 	<name>Liferay Maven Workspace Wars</name>
+    <packaging>pom</packaging>
 
     <modules>
     </modules>

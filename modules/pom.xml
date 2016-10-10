@@ -11,6 +11,7 @@
 	</parent>
 	<artifactId>liferay-maven-workspace-modules</artifactId>
 	<name>Liferay Maven Workspace Modules</name>
+    <packaging>pom</packaging>
 
     <modules>
     </modules>
