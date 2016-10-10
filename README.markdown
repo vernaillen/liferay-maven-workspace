@@ -1,4 +1,6 @@
-# An opinionated way of structure your next Liferay 7.0 Maven project.
+# Liferay Maven Workspace
+
+An opinionated way of structure your next Liferay 7.0 Maven project.
 
 ## Configs
 
@@ -10,7 +12,7 @@ Put your osgi bundles in here.
 
 ## Themes
 
-TODO
+Put your theme projects in here.
 
 ## Wars
 
