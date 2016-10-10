@@ -1,5 +1,5 @@
 target
-themes/**/css
-themes/**/images
-themes/**/js
-themes/**/templates
+themes/**/webapp/css
+themes/**/webapp/images
+themes/**/webapp/js
+themes/**/webapp/templates
