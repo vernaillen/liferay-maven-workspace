@@ -23,7 +23,21 @@
                 <version>0.1</version>
                 <executions>
                     <execution>
-                        <id>directories</id>
+                        <id>set-clean-root</id>
+                        <goals>
+                            <goal>directory-of</goal>
+                        </goals>
+                        <phase>pre-clean</phase>
+                        <configuration>
+                            <property>liferay-maven-workspace.basedir</property>
+                            <project>
+                                <groupId>com.liferay.maven.workspace</groupId>
+                                <artifactId>liferay-maven-workspace</artifactId>
+                            </project>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>set-default-root</id>
                         <goals>
                             <goal>directory-of</goal>
                         </goals>
@@ -47,15 +61,28 @@
                     <version>1.7</version>
                     <executions>
                         <execution>
+                            <id>clean-liferay-artifacts</id>
+                            <phase>clean</phase>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                            <configuration>
+                                <target name="clean">
+                                    <delete failonerror="false" file="${deploy.war.dir}/${project.artifactId}.war"/>
+                                    <delete failonerror="false" file="${deploy.modules.dir}/${project.artifactId}.jar"/>
+                                </target>
+                            </configuration>
+                        </execution>
+                        <execution>
                             <id>deploy-liferay-artifacts</id>
                             <phase>install</phase>
                             <goals>
                                 <goal>run</goal>
                             </goals>
                             <configuration>
-                                <target name="copy project artifacts to liferay bundles">
-                                    <copy failonerror="false" file="${project.build.directory}/${project.artifactId}-${project.version}.war" tofile="${deploy.dir}/${project.artifactId}.war"/>
-                                    <copy failonerror="false" file="${project.build.directory}/${project.artifactId}-${project.version}.jar" tofile="${deploy.dir}/${project.artifactId}.jar"/>
+                                <target name="deploy">
+                                    <copy failonerror="false" file="${project.build.directory}/${project.artifactId}-${project.version}.war" tofile="${deploy.war.dir}/${project.artifactId}.war"/>
+                                    <copy failonerror="false" file="${project.build.directory}/${project.artifactId}-${project.version}.jar" tofile="${deploy.modules.dir}/${project.artifactId}.jar"/>
                                 </target>
                             </configuration>
                         </execution>
@@ -66,6 +93,7 @@
     </build>
 
     <properties>
-        <deploy.dir>${liferay-maven-workspace.basedir}/bundles/deploy</deploy.dir>
+        <deploy.war.dir>${liferay-maven-workspace.basedir}/bundles/osgi/war</deploy.war.dir>
+        <deploy.modules.dir>${liferay-maven-workspace.basedir}/bundles/osgi/modules</deploy.modules.dir>
     </properties>
 </project>
