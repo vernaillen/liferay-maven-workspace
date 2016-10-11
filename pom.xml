@@ -1,9 +1,7 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                             http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    
+
     <groupId>com.liferay.maven.workspace</groupId>
     <artifactId>liferay-maven-workspace</artifactId>
     <packaging>pom</packaging>
@@ -17,4 +15,57 @@
         <module>wars</module>
     </modules>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.commonjava.maven.plugins</groupId>
+                <artifactId>directory-maven-plugin</artifactId>
+                <version>0.1</version>
+                <executions>
+                    <execution>
+                        <id>directories</id>
+                        <goals>
+                            <goal>directory-of</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                        <configuration>
+                            <property>liferay-maven-workspace.basedir</property>
+                            <project>
+                                <groupId>com.liferay.maven.workspace</groupId>
+                                <artifactId>liferay-maven-workspace</artifactId>
+                            </project>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>1.7</version>
+                    <executions>
+                        <execution>
+                            <id>deploy-liferay-artifacts</id>
+                            <phase>install</phase>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                            <configuration>
+                                <target name="copy project artifacts to liferay bundles">
+                                    <copy failonerror="false" file="${project.build.directory}/${project.artifactId}-${project.version}.war" tofile="${deploy.dir}/${project.artifactId}.war"/>
+                                    <copy failonerror="false" file="${project.build.directory}/${project.artifactId}-${project.version}.jar" tofile="${deploy.dir}/${project.artifactId}.jar"/>
+                                </target>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <properties>
+        <deploy.dir>${liferay-maven-workspace.basedir}/bundles/deploy</deploy.dir>
+    </properties>
 </project>
