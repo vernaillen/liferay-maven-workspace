@@ -1,0 +1,9 @@
+Bundle-Name: sample-sb-api
+Bundle-SymbolicName: com.mycompany.api
+Bundle-Version: 1.0-SNAPSHOT
+Export-Package:\
+	com.mycompany.exception,\
+	com.mycompany.model,\
+	com.mycompany.service,\
+	com.mycompany.service.persistence
+-includeresource: META-INF/service.xml=../sample-sb-service/service.xml

@@ -12,5 +12,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>sample-mvc-portlet</module>
+        <module>sample-sb</module>
     </modules>
 </project>
