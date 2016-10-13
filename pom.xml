@@ -29,7 +29,7 @@
                         </goals>
                         <phase>pre-clean</phase>
                         <configuration>
-                            <property>liferay-maven-workspace.basedir</property>
+                            <property>liferay.workspace.basedir</property>
                             <project>
                                 <groupId>com.liferay.maven.workspace</groupId>
                                 <artifactId>liferay-maven-workspace</artifactId>
@@ -43,7 +43,7 @@
                         </goals>
                         <phase>initialize</phase>
                         <configuration>
-                            <property>liferay-maven-workspace.basedir</property>
+                            <property>liferay.workspace.basedir</property>
                             <project>
                                 <groupId>com.liferay.maven.workspace</groupId>
                                 <artifactId>liferay-maven-workspace</artifactId>
@@ -58,7 +58,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-antrun-plugin</artifactId>
-                    <version>1.7</version>
+                    <version>1.8</version>
                     <executions>
                         <execution>
                             <id>clean-liferay-artifacts</id>
@@ -68,8 +68,8 @@
                             </goals>
                             <configuration>
                                 <target name="clean">
-                                    <delete failonerror="false" file="${deploy.war.dir}/${project.artifactId}.war"/>
-                                    <delete failonerror="false" file="${deploy.modules.dir}/${project.artifactId}.jar"/>
+                                    <delete failonerror="false" file="${liferay.workspace.deploy.war.dir}/${project.artifactId}.war"/>
+                                    <delete failonerror="false" file="${liferay.workspace.deploy.modules.dir}/${project.artifactId}.jar"/>
                                 </target>
                             </configuration>
                         </execution>
@@ -81,8 +81,23 @@
                             </goals>
                             <configuration>
                                 <target name="deploy">
-                                    <copy failonerror="false" file="${project.build.directory}/${project.artifactId}-${project.version}.war" tofile="${deploy.war.dir}/${project.artifactId}.war"/>
-                                    <copy failonerror="false" file="${project.build.directory}/${project.artifactId}-${project.version}.jar" tofile="${deploy.modules.dir}/${project.artifactId}.jar"/>
+                                    <copy failonerror="false" file="${project.build.directory}/${project.artifactId}-${project.version}.war" tofile="${liferay.workspace.deploy.war.dir}/${project.artifactId}.war"/>
+                                    <copy failonerror="false" file="${project.build.directory}/${project.artifactId}-${project.version}.jar" tofile="${liferay.workspace.deploy.modules.dir}/${project.artifactId}.jar"/>
+                                </target>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>init-bundle</id>
+                            <phase>initialize</phase>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                            <configuration>
+                                <target name="init-bundle">
+                                    <get src="${liferay.workspace.bundle.url}" dest="${liferay.workspace.bundle.dest}" skipexisting="true" usetimestamp="true"/>
+                                    <unzip src="${liferay.workspace.bundle.dest}" dest="${liferay.workspace.home.dir}" overwrite="false">
+                                        <cutdirsmapper dirs="1"/>
+                                    </unzip>
                                 </target>
                             </configuration>
                         </execution>
@@ -93,7 +108,56 @@
     </build>
 
     <properties>
-        <deploy.war.dir>${liferay-maven-workspace.basedir}/bundles/osgi/war</deploy.war.dir>
-        <deploy.modules.dir>${liferay-maven-workspace.basedir}/bundles/osgi/modules</deploy.modules.dir>
+        <liferay.workspace.home.dir>${liferay.workspace.basedir}/bundles</liferay.workspace.home.dir>
+        <liferay.workspace.bundle.dest>${user.home}/.liferay/bundles/liferay-ce-portal-tomcat-7.0-ga3-20160804222206210.zip</liferay.workspace.bundle.dest>
+        <liferay.workspace.bundle.url>http://downloads.sourceforge.net/project/lportal/Liferay%20Portal/7.0.2%20GA3/liferay-ce-portal-tomcat-7.0-ga3-20160804222206210.zip</liferay.workspace.bundle.url>
+        <liferay.workspace.deploy.war.dir>${liferay.workspace.home.dir}/osgi/war</liferay.workspace.deploy.war.dir>
+        <liferay.workspace.deploy.modules.dir>${liferay.workspace.home.dir}/osgi/modules</liferay.workspace.deploy.modules.dir>
+        <liferay.workspace.environment>local</liferay.workspace.environment>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <property>
+                    <name>environment</name>
+                    <value>dev</value>
+                </property>
+            </activation>
+            <properties>
+                <liferay.workspace.environment>dev</liferay.workspace.environment>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <activation>
+                <property>
+                    <name>environment</name>
+                    <value>prod</value>
+                </property>
+            </activation>
+            <properties>
+                <liferay.workspace.environment>prod</liferay.workspace.environment>
+                <liferay.workspace.home.dir>/opt/liferay</liferay.workspace.home.dir>
+                <liferay.workspace.deploy.war.dir>${liferay.home}/osgi/war</liferay.workspace.deploy.war.dir>
+                <liferay.workspace.deploy.modules.dir>${liferay.home}/osgi/modules</liferay.workspace.deploy.modules.dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>uat</id>
+            <activation>
+                <property>
+                    <name>environment</name>
+                    <value>uat</value>
+                </property>
+            </activation>
+            <properties>
+                <liferay.workspace.environment>uat</liferay.workspace.environment>
+                <liferay.workspace.home.dir>/opt/liferay</liferay.workspace.home.dir>
+                <liferay.workspace.deploy.war.dir>${liferay.home}/osgi/war</liferay.workspace.deploy.war.dir>
+                <liferay.workspace.deploy.modules.dir>${liferay.home}/osgi/modules</liferay.workspace.deploy.modules.dir>
+            </properties>
+        </profile>
+    </profiles>
 </project>

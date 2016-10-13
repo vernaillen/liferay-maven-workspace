@@ -11,6 +11,32 @@
     <name>Liferay Maven Workspace Configs</name>
     <packaging>pom</packaging>
 
-    <modules>
-    </modules>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>copy-liferay-configs</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target name="deploy-configs">
+                                <copy failonerror="false" todir="${liferay.workspace.home.dir}" overwrite="true">
+                                    <fileset dir="${basedir}/common" includes="**"/>
+                                </copy>
+                                <copy failonerror="false" todir="${liferay.workspace.home.dir}" overwrite="true">
+                                    <fileset dir="${basedir}/${liferay.workspace.environment}" includes="**"/>
+                                </copy>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
