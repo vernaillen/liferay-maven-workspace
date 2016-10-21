@@ -16,4 +16,4 @@ Put your theme projects in here.
 
 ## Wars
 
-Put your wars projects here
+Put your war projects here

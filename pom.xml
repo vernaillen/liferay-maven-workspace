@@ -8,6 +8,16 @@
     <version>1.0.0</version>
     <name>Liferay Maven Workspace</name>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <liferay.workspace.home.dir>${liferay.workspace.basedir}/bundles</liferay.workspace.home.dir>
+        <liferay.workspace.bundle.dest>${user.home}/.liferay/bundles/liferay-ce-portal-tomcat-7.0-ga3-20160804222206210.zip</liferay.workspace.bundle.dest>
+        <liferay.workspace.bundle.url>http://downloads.sourceforge.net/project/lportal/Liferay%20Portal/7.0.2%20GA3/liferay-ce-portal-tomcat-7.0-ga3-20160804222206210.zip</liferay.workspace.bundle.url>
+        <liferay.workspace.deploy.war.dir>${liferay.workspace.home.dir}/osgi/war</liferay.workspace.deploy.war.dir>
+        <liferay.workspace.deploy.modules.dir>${liferay.workspace.home.dir}/osgi/modules</liferay.workspace.deploy.modules.dir>
+        <liferay.workspace.environment>local</liferay.workspace.environment>
+    </properties>
+
     <modules>
         <module>configs</module>
         <module>modules</module>
@@ -75,14 +85,14 @@
                         </execution>
                         <execution>
                             <id>deploy-liferay-artifacts</id>
-                            <phase>install</phase>
+                            <phase>pre-integration-test</phase>
                             <goals>
                                 <goal>run</goal>
                             </goals>
                             <configuration>
                                 <target name="deploy">
-                                    <copy failonerror="false" file="${project.build.directory}/${project.artifactId}-${project.version}.war" tofile="${liferay.workspace.deploy.war.dir}/${project.artifactId}.war"/>
-                                    <copy failonerror="false" file="${project.build.directory}/${project.artifactId}-${project.version}.jar" tofile="${liferay.workspace.deploy.modules.dir}/${project.artifactId}.jar"/>
+                                    <copy failonerror="false" quiet="true" file="${project.build.directory}/${project.artifactId}-${project.version}.war" tofile="${liferay.workspace.deploy.war.dir}/${project.artifactId}.war"/>
+                                    <copy failonerror="false" quiet="true" file="${project.build.directory}/${project.artifactId}-${project.version}.jar" tofile="${liferay.workspace.deploy.modules.dir}/${project.artifactId}.jar"/>
                                 </target>
                             </configuration>
                         </execution>
@@ -98,6 +108,9 @@
                                     <unzip src="${liferay.workspace.bundle.dest}" dest="${liferay.workspace.home.dir}" overwrite="false">
                                         <cutdirsmapper dirs="1"/>
                                     </unzip>
+                                    <exec executable="sh" osfamily="unix">
+                                        <arg line='-c "chmod a+x ${liferay.workspace.home.dir}/tomcat-*/bin/*.sh"'/>
+                                    </exec>
                                 </target>
                             </configuration>
                         </execution>
@@ -106,15 +119,6 @@
             </plugins>
         </pluginManagement>
     </build>
-
-    <properties>
-        <liferay.workspace.home.dir>${liferay.workspace.basedir}/bundles</liferay.workspace.home.dir>
-        <liferay.workspace.bundle.dest>${user.home}/.liferay/bundles/liferay-ce-portal-tomcat-7.0-ga3-20160804222206210.zip</liferay.workspace.bundle.dest>
-        <liferay.workspace.bundle.url>http://downloads.sourceforge.net/project/lportal/Liferay%20Portal/7.0.2%20GA3/liferay-ce-portal-tomcat-7.0-ga3-20160804222206210.zip</liferay.workspace.bundle.url>
-        <liferay.workspace.deploy.war.dir>${liferay.workspace.home.dir}/osgi/war</liferay.workspace.deploy.war.dir>
-        <liferay.workspace.deploy.modules.dir>${liferay.workspace.home.dir}/osgi/modules</liferay.workspace.deploy.modules.dir>
-        <liferay.workspace.environment>local</liferay.workspace.environment>
-    </properties>
 
     <profiles>
         <profile>
