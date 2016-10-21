@@ -85,7 +85,7 @@
 					<replacements>
 						<replacement>
 							<token>@distName@</token>
-							<value>${artifactId}-${version}</value>
+							<value>${project.artifactId}-${project.version}</value>
 						</replacement>
 						<replacement>
 							<token>@pathDist@</token>

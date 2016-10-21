@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-    <artifactId>liferay-maven-workspace-modules</artifactId>
-    <groupId>com.liferay.maven.workspace</groupId>
-    <version>1.0.0</version>
-  </parent>
+		<artifactId>liferay-maven-workspace-modules</artifactId>
+		<groupId>com.liferay.maven.workspace</groupId>
+		<version>1.0.0</version>
+	</parent>
 	<groupId>com.mycompany</groupId>
 	<artifactId>sample-mvc-portlet</artifactId>
 	<version>1.0.0</version>
@@ -67,6 +67,9 @@
 					<archive>
 						<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
 					</archive>
+					<excludes>
+						<exclude>**/META-INF/resources/**/.sass-cache/</exclude>
+					</excludes>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -110,16 +113,6 @@
 				<configuration>
 					<portalCommonPath>/</portalCommonPath>
 					<docrootDirName>src/main/resources</docrootDirName>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.6</version>
-				<configuration>
-					<excludes>
-						<exclude>**/META-INF/resources/**/.sass-cache/</exclude>
-					</excludes>
 				</configuration>
 			</plugin>
 		</plugins>

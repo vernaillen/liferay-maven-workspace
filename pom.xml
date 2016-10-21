@@ -88,6 +88,12 @@
                                         <delete failonerror="false" file="${liferay.workspace.deploy.modules.dir}/${project.artifactId}.${project.packaging}"/>
                                     </then>
                                 </if>
+                                <if>
+                                    <equals arg1="${project.packaging}" arg2="pom"/>
+                                    <then>
+                                        <echo>Nothing to clean. Skipping....</echo>
+                                    </then>
+                                </if>
                             </target>
                         </configuration>
                     </execution>
@@ -110,6 +116,12 @@
                                     <equals arg1="${project.packaging}" arg2="jar"/>
                                     <then>
                                         <copy failonerror="false" file="${project.build.directory}/${project.artifactId}-${project.version}.${project.packaging}" tofile="${liferay.workspace.deploy.modules.dir}/${project.artifactId}.${project.packaging}"/>
+                                    </then>
+                                </if>
+                                <if>
+                                    <equals arg1="${project.packaging}" arg2="pom"/>
+                                    <then>
+                                        <echo>Nothing to clean. Skipping....</echo>
                                     </then>
                                 </if>
                             </target>
