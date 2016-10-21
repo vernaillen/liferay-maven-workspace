@@ -14,14 +14,6 @@
 		<artifactId>sample-sb</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 	<dependencies>
 		<dependency>
 			<groupId>org.osgi</groupId>
