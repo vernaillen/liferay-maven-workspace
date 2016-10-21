@@ -14,5 +14,6 @@
 
     <modules>
         <module>sample-maven-theme</module>
+        <module>sample-node-theme</module>
     </modules>
 </project>

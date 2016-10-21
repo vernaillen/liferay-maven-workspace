@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.liferay.support</groupId>
+	<artifactId>support-sample-theme</artifactId>
+	<name>Support Sample Theme</name>
+	<packaging>war</packaging>
+	<version>1.0.0</version>
+	<build>
+		<plugins>
+			<!-- https://github.com/eirslett/frontend-maven-plugin -->
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>0.0.27</version>
+				<configuration>
+					<installDirectory>target</installDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>install node and npm</id>
+						<phase>initialize</phase>
+						<goals>
+						<goal>install-node-and-npm</goal>
+						</goals>
+						<configuration>
+							<!-- https://nodejs.org/en/download/releases/ -->
+							<nodeVersion>v4.2.6</nodeVersion>
+							<npmVersion>2.14.12</npmVersion>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm install</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>install</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>gulp build</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>gulp</goal>
+						</goals>
+						<configuration>
+							<arguments>--verbose</arguments>
+							<arguments>build</arguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencies>
+	</dependencies>
+</project>

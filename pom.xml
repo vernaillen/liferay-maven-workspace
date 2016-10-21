@@ -62,62 +62,88 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>clean-liferay-artifacts</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target name="clean">
+                                <taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="maven.plugin.classpath"/>
+                                <if>
+                                    <equals arg1="${project.packaging}" arg2="war"/>
+                                    <then>
+                                        <delete failonerror="false" file="${liferay.workspace.deploy.war.dir}/${project.artifactId}.${project.packaging}"/>
+                                    </then>
+                                </if>
+                                <if>
+                                    <equals arg1="${project.packaging}" arg2="jar"/>
+                                    <then>
+                                        <delete failonerror="false" file="${liferay.workspace.deploy.modules.dir}/${project.artifactId}.${project.packaging}"/>
+                                    </then>
+                                </if>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>deploy-liferay-artifacts</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target name="deploy">
+                                <taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="maven.plugin.classpath"/>
+                                <if>
+                                    <equals arg1="${project.packaging}" arg2="war"/>
+                                    <then>
+                                        <copy failonerror="false" file="${project.build.directory}/${project.artifactId}-${project.version}.${project.packaging}" tofile="${liferay.workspace.deploy.war.dir}/${project.artifactId}.${project.packaging}"/>
+                                    </then>
+                                </if>
+                                <if>
+                                    <equals arg1="${project.packaging}" arg2="jar"/>
+                                    <then>
+                                        <copy failonerror="false" file="${project.build.directory}/${project.artifactId}-${project.version}.${project.packaging}" tofile="${liferay.workspace.deploy.modules.dir}/${project.artifactId}.${project.packaging}"/>
+                                    </then>
+                                </if>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>init-bundle</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <inherited>false</inherited>
+                        <configuration>
+                            <target name="init-bundle">
+                                <get src="${liferay.workspace.bundle.url}" dest="${liferay.workspace.bundle.dest}" skipexisting="true" usetimestamp="true"/>
+                                <unzip src="${liferay.workspace.bundle.dest}" dest="${liferay.workspace.home.dir}" overwrite="false">
+                                    <cutdirsmapper dirs="1"/>
+                                </unzip>
+                                <exec executable="sh" osfamily="unix">
+                                    <arg line='-c "chmod a+x ${liferay.workspace.home.dir}/tomcat-*/bin/*.sh"'/>
+                                </exec>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>ant-contrib</groupId>
+                        <artifactId>ant-contrib</artifactId>
+                        <version>20020829</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
         </plugins>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-antrun-plugin</artifactId>
-                    <version>1.8</version>
-                    <executions>
-                        <execution>
-                            <id>clean-liferay-artifacts</id>
-                            <phase>clean</phase>
-                            <goals>
-                                <goal>run</goal>
-                            </goals>
-                            <configuration>
-                                <target name="clean">
-                                    <delete failonerror="false" file="${liferay.workspace.deploy.war.dir}/${project.artifactId}.war"/>
-                                    <delete failonerror="false" file="${liferay.workspace.deploy.modules.dir}/${project.artifactId}.jar"/>
-                                </target>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>deploy-liferay-artifacts</id>
-                            <phase>pre-integration-test</phase>
-                            <goals>
-                                <goal>run</goal>
-                            </goals>
-                            <configuration>
-                                <target name="deploy">
-                                    <copy failonerror="false" quiet="true" file="${project.build.directory}/${project.artifactId}-${project.version}.war" tofile="${liferay.workspace.deploy.war.dir}/${project.artifactId}.war"/>
-                                    <copy failonerror="false" quiet="true" file="${project.build.directory}/${project.artifactId}-${project.version}.jar" tofile="${liferay.workspace.deploy.modules.dir}/${project.artifactId}.jar"/>
-                                </target>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>init-bundle</id>
-                            <phase>initialize</phase>
-                            <goals>
-                                <goal>run</goal>
-                            </goals>
-                            <configuration>
-                                <target name="init-bundle">
-                                    <get src="${liferay.workspace.bundle.url}" dest="${liferay.workspace.bundle.dest}" skipexisting="true" usetimestamp="true"/>
-                                    <unzip src="${liferay.workspace.bundle.dest}" dest="${liferay.workspace.home.dir}" overwrite="false">
-                                        <cutdirsmapper dirs="1"/>
-                                    </unzip>
-                                    <exec executable="sh" osfamily="unix">
-                                        <arg line='-c "chmod a+x ${liferay.workspace.home.dir}/tomcat-*/bin/*.sh"'/>
-                                    </exec>
-                                </target>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
     </build>
 
     <profiles>
