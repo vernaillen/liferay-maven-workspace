@@ -13,6 +13,7 @@
 
     <modules>
         <module>sample-jsf-portlet</module>
+        <module>sample-springmvc-portlet</module>
     </modules>
 
 </project>

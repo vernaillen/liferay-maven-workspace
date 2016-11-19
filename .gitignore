@@ -1,2 +1,7 @@
 bundles
 target
+
+# Intellij
+.idea/
+*.iml
+*.iws
